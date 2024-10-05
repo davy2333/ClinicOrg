@@ -72,5 +72,97 @@ namespace ClinicOrg.Data
             return oPaciente;
         }
 
+        public bool Guardar(Paciente opaciente)
+        {
+            bool rpta;
+
+            try
+            {
+                var cn = new Conexion();
+
+                using (var conexion = new SqlConnection(cn.getCadenaSQL()))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("GuardarPaciente", conexion);
+                    cmd.Parameters.AddWithValue("Nombre", opaciente.Nombre);
+                    cmd.Parameters.AddWithValue("Apellidos", opaciente.Apellido);
+                    cmd.Parameters.AddWithValue("Sexo", opaciente.Sexo);
+                    cmd.Parameters.AddWithValue("Telefono", opaciente.Telefono);
+                    cmd.Parameters.AddWithValue("FechaNacimiento", opaciente.FechaNacimiento);
+                    cmd.Parameters.AddWithValue("Email", opaciente.Email);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                rpta = true;
+            }
+            catch (Exception e)
+            {
+                String error = e.Message; 
+                rpta=false;
+            }
+
+            return rpta;
+        }
+
+        public bool Editar(Paciente opaciente)
+        {
+            bool rpta;
+
+            try
+            {
+                var cn = new Conexion();
+
+                using (var conexion = new SqlConnection(cn.getCadenaSQL()))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("EditarPaciente", conexion);
+                    cmd.Parameters.AddWithValue("Personid", opaciente.Id); 
+                    cmd.Parameters.AddWithValue("Nombre", opaciente.Nombre); 
+                    cmd.Parameters.AddWithValue("Apellidos", opaciente.Apellido);
+                    cmd.Parameters.AddWithValue("Sexo", opaciente.Sexo);
+                    cmd.Parameters.AddWithValue("Telefono", opaciente.Telefono);
+                    cmd.Parameters.AddWithValue("FechaNacimiento", opaciente.FechaNacimiento);
+                    cmd.Parameters.AddWithValue("Email", opaciente.Email);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                rpta = true;
+            }
+            catch (Exception e)
+            {
+                String error = e.Message;
+                rpta = false;
+            }
+
+
+            return rpta;
+        }
+        public bool Eliminar(int Personid)
+        {
+            bool rpta;
+
+            try
+            {
+                var cn = new Conexion();
+
+                using (var conexion = new SqlConnection(cn.getCadenaSQL()))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("EliminarPaciente", conexion);
+                    cmd.Parameters.AddWithValue("Personid", Personid);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                rpta = true;
+            }
+            catch (Exception e)
+            {
+                String error = e.Message;
+                rpta = false;
+            }
+
+
+            return rpta;
+        }
     }
 }
