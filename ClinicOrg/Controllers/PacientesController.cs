@@ -7,11 +7,11 @@ namespace ClinicOrg.Controllers
 {
     public class PacientesController : Controller
     {
-        Paciente _paciente = new Paciente();
+        PacienteDatos _pacienteDatos = new PacienteDatos();
         public IActionResult Listar()
         {
             //mostrara la lista de pacientes
-            var oLista = _paciente.
+            var oLista = _pacienteDatos.Listar();
             return View(oLista);
         }
 
@@ -22,11 +22,14 @@ namespace ClinicOrg.Controllers
             return View();
         }
 
-        public IActionResult Guardar()
+        [HttpPost]
+        public IActionResult Guardar(Paciente oPaciente)
         {
-
-            
-            //metodo recibe el objeto para guardarlo en db
+            //metodo que solo devuelve la vista
+            var respuesta = _pacienteDatos.Guardar(oPaciente);
+            if (respuesta)
+                return RedirectToAction("Listar");
+            else
             return View();
         }
     }
